@@ -24,9 +24,7 @@ function add_children(SimpleXMLElement $parent, SimpleXMLElement $child) {
 
 $items = array();
 foreach($feed->channel->children() as $child) {
-	if('item' !== $child->getName()) {
-		add_children($channel, $child);
-	} else {
+	if('item' == $child->getName()) {
 		$child_time = strtotime($child->pubDate);
 		$child_date = date('Y-m-d', $child_time);
 		$items[$child_date][] = $child;
@@ -44,16 +42,11 @@ foreach($items as $date => $item_list) {
 		foreach($item_list as $i => $item) {
 			$new_time = $date_string . ' ' . $start_hour . ':00:00 -0700';
 			$item->pubDate = $new_time;
-			//echo $item->title . "\t" . $item->pubDate . "\t" . $new_time . "\n";
 			$start_hour++;
-			add_children($channel, $item);
-		}
-	} else {
-		foreach($item_list as $i => $item) {
-			add_children($channel, $item);
 		}
 	}
 }
-$new_feed->addAttribute('version', '2.0');
-echo $new_feed->asXML();
+//$new_feed->addAttribute('version', '2.0');
+//echo $new_feed->asXML();
+echo $feed->asXML();
 ?>
