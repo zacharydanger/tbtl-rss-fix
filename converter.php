@@ -1,5 +1,4 @@
 <?php
-$rss_feed = '/home/zcampbell/Desktop/tbtl_rss/tbtl.rss';
 $rss_feed = 'http://www.mynorthwest.com/rss/tbtl.rss';
 
 $feed = simplexml_load_string(file_get_contents($rss_feed));
