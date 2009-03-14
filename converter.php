@@ -1,26 +1,8 @@
 <?php
 $rss_feed = '/home/zcampbell/Desktop/tbtl_rss/tbtl.rss';
+$rss_feed = 'http://www.mynorthwest.com/rss/tbtl.rss';
 
 $feed = simplexml_load_string(file_get_contents($rss_feed));
-
-$new_feed = new SimpleXMLElement('<rss></rss>');
-$channel = $new_feed->addChild('channel');
-
-function sanitize($string) {
-	$replace = array('&nbsp;');
-	$with = array(' ');
-	return str_replace($replace, $with, $string);
-}
-
-function add_children(SimpleXMLElement $parent, SimpleXMLElement $child) {
-	$element = $parent->addChild($child->getName(), sanitize($child));
-	foreach($child->attributes as $key => $value) {
-		$element->addAttribute($key, $value);
-	}
-	foreach($child->children() as $i => $grand_child) {
-		add_children($element, $grand_child);
-	}
-}
 
 $items = array();
 foreach($feed->channel->children() as $child) {
@@ -46,7 +28,6 @@ foreach($items as $date => $item_list) {
 		}
 	}
 }
-//$new_feed->addAttribute('version', '2.0');
-//echo $new_feed->asXML();
+
 echo $feed->asXML();
 ?>
